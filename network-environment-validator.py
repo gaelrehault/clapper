@@ -1,16 +1,9 @@
 #!/usr/bin/env python
 
 import argparse
-import importlib
-import logging
 import sys
 
 from validation_library.validate_network_environment import validate
-
-
-logging.basicConfig()
-LOG = logging.getLogger(__name__)
-LOG.setLevel(logging.DEBUG)  # JPEELER: change to INFO later
 
 
 def main():
