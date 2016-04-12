@@ -137,7 +137,7 @@ def main():
     if p.wait() != 0:
         msg = "Error running `swift list ironic-inspector`: {}".format(
             p.stderr.read())
-        module.fail_json()
+        module.fail_json(msg=msg)
 
     hardware_ids = [i.strip() for i in p.stdout.read().splitlines() if i.strip()]
     inspector_data = [get_node_hardware_data(i, env) for i in hardware_ids]
@@ -156,8 +156,14 @@ def main():
             msg = "The key '{}' has differing values: {}"
             diffs.append(msg.format(key, repr(values)))
 
+    if diffs:
+        msg = 'Found some differences between the introspected hardware.'
+    else:
+        msg = 'No differences found.'
+
     result = {
         'changed': True,
+        'msg': msg,
         'warnings': diffs,
     }
     module.exit_json(**result)
